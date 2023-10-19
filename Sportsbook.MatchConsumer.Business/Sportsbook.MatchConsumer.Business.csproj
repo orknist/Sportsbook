@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sportsbook.Contracts\Sportsbook.Contracts.csproj" />
+    <ProjectReference Include="..\Sportsbook.Data.Dapper\Sportsbook.Data.Dapper.csproj" />
+    <ProjectReference Include="..\Sportsbook.Infrastructure.MassTransit\Sportsbook.Infrastructure.MassTransit.csproj" />
+  </ItemGroup>
+
+</Project>

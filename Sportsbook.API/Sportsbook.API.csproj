@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sportsbook.API.Common\Sportsbook.API.Common.csproj" />
+    <ProjectReference Include="..\Sportsbook.API.QueueService\Sportsbook.API.QueueService.csproj" />
+    <ProjectReference Include="..\Sportsbook.Infrastructure.ExceptionHandler\Sportsbook.Infrastructure.ExceptionHandler.csproj" />
+    <ProjectReference Include="..\Sportsbook.Infrastructure.MassTransit\Sportsbook.Infrastructure.MassTransit.csproj" />
+    <ProjectReference Include="..\Sportsbook.Infrastructure.Swagger\Sportsbook.Infrastructure.Swagger.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,1 @@
+docker-compose -f "DockerCompose.yml" up -d

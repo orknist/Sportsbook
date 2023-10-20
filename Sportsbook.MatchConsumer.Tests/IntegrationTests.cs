@@ -2,7 +2,7 @@
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sportsbook.API.Common.DTOs;
+using Sportsbook.API.Common.Responses;
 using Sportsbook.Contracts.Models;
 using Sportsbook.Contracts.Requests;
 using Sportsbook.Contracts.Responses;
@@ -38,57 +38,57 @@ namespace Sportsbook.MatchConsumer.Tests
         [Fact]
         public async Task GetMatch_WhenMatchIdExists_ReturnsMatch()
         {
-            var requestModel = new GetMatchRequestModel(default) { MatchId = 1 };
-            var requestClient = _bus.CreateRequestClient<GetMatchRequestModel>();
-            var response = await requestClient.GetResponse<GetMatchResponseModel>(requestModel);
-            var responseDTO = _mapper.Map<GetMatchResultDTO>(response.Message);
+            var messageRequest = new GetMatchMessageRequest(default) { MatchId = 1 };
+            var requestClient = _bus.CreateRequestClient<GetMatchMessageRequest>();
+            var messageResponse = await requestClient.GetResponse<GetMatchMessageResponse>(messageRequest);
+            var apiResponse = _mapper.Map<GetMatchApiResponse>(messageResponse.Message);
 
-            Assert.NotNull(responseDTO);
-            Assert.True(responseDTO.IsSuccess, "responseDTO.IsSuccess is false");
-            Assert.NotNull(responseDTO.Match);
-            Assert.Equal(1, responseDTO.Match.Id);
+            Assert.NotNull(apiResponse);
+            Assert.True(apiResponse.IsSuccess, "apiResponse.IsSuccess is false");
+            Assert.NotNull(apiResponse.Match);
+            Assert.Equal(1, apiResponse.Match.Id);
         }
 
         [Fact]
         public async Task GetMatch_WhenMatchIdNotExists_ReturnsNoMatch()
         {
-            var requestModel = new GetMatchRequestModel(default) { MatchId = 10 };
-            var requestClient = _bus.CreateRequestClient<GetMatchRequestModel>();
-            var response = await requestClient.GetResponse<GetMatchResponseModel>(requestModel);
-            var responseDTO = _mapper.Map<GetMatchResultDTO>(response.Message);
+            var messageRequest = new GetMatchMessageRequest(default) { MatchId = 10 };
+            var requestClient = _bus.CreateRequestClient<GetMatchMessageRequest>();
+            var messageResponse = await requestClient.GetResponse<GetMatchMessageResponse>(messageRequest);
+            var apiResponse = _mapper.Map<GetMatchApiResponse>(messageResponse.Message);
 
-            Assert.NotNull(responseDTO);
-            Assert.False(responseDTO.IsSuccess, "responseDTO.IsSuccess is true");
-            Assert.Null(responseDTO.Match);
+            Assert.NotNull(apiResponse);
+            Assert.False(apiResponse.IsSuccess, "apiResponse.IsSuccess is true");
+            Assert.Null(apiResponse.Match);
         }
 
         [Fact]
         public async Task AddMatch_WhenMatchIdNotExists_ReturnsMatchId()
         {
-            var requestModel = new AddMatchRequestModel(
-                new MatchModel(
+            var messageRequest = new AddMatchMessageRequest(
+                new MatchMessageModel(
                     (int)DateTime.UtcNow.Ticks,
                     "Turkey v England",
-                    new RoundModel(1, "Final"),
-                    new SportModel(1, "Football"),
-                    new VenueModel(1, "Ataturk Olympic Stadium"),
+                    new RoundMessageModel(1, "Final"),
+                    new SportMessageModel(1, "Football"),
+                    new VenueMessageModel(1, "Ataturk Olympic Stadium"),
                     "Scheduled",
-                    new CompetitionModel(1, "World Cup"),
-                    new List<CompetitorModel>
+                    new CompetitionMessageModel(1, "World Cup"),
+                    new List<CompetitorMessageModel>
                     {
                         new (1, "Turkey", "Home", "Team", default, default),
                         new (2, "England", "Away", "Team", default, default)
                     },
                     new DateTime(2026, 7, 19, 21, 0, 0)),
-                new HeaderModel(DateTime.UtcNow));
+                new HeaderMessageModel(DateTime.UtcNow));
 
-            var requestClient = _bus.CreateRequestClient<AddMatchRequestModel>();
-            var response = await requestClient.GetResponse<AddMatchResponseModel>(requestModel);
-            var responseDTO = _mapper.Map<AddMatchResultDTO>(response.Message);
+            var requestClient = _bus.CreateRequestClient<AddMatchMessageRequest>();
+            var messageResponse = await requestClient.GetResponse<AddMatchMessageResponse>(messageRequest);
+            var apiResponse = _mapper.Map<AddMatchApiResponse>(messageResponse.Message);
 
-            Assert.NotNull(responseDTO);
-            Assert.False(responseDTO.IsSuccess, "responseDTO.IsSuccess is true");
-            Assert.Equal(requestModel.Match.Id, responseDTO.MatchId);
+            Assert.NotNull(apiResponse);
+            Assert.False(apiResponse.IsSuccess, "apiResponse.IsSuccess is true");
+            Assert.Equal(messageRequest.Match.Id, apiResponse.MatchId);
         }
     }
 }

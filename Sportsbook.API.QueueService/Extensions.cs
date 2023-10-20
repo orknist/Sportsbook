@@ -8,7 +8,7 @@ namespace Sportsbook.API.QueueService
     {
         public static IServiceCollection AddQueueServices(this IServiceCollection services)
         {
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(typeof(Mapping.MappingProfile).Assembly);
             services.AddScoped<IMatchService, MatchService>();
             return services;
         }

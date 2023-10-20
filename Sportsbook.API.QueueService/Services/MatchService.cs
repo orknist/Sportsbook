@@ -2,11 +2,12 @@
 using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
-using Sportsbook.API.Common.DTOs;
+using Sportsbook.API.Common.Requests;
+using Sportsbook.API.Common.Responses;
 using Sportsbook.API.QueueService.Interfaces;
 using Sportsbook.Contracts.Requests;
 using Sportsbook.Contracts.Responses;
-using Sportsbook.Data.Redis;
+using Sportsbook.Infrastructure.Redis;
 
 namespace Sportsbook.API.QueueService.Services
 {
@@ -25,53 +26,53 @@ namespace Sportsbook.API.QueueService.Services
             _redisConfig = redisConfig.Value;
         }
 
-        public async Task<AddMatchResultDTO> AddMatchAsync(AddMatchDTO dto)
+        public async Task<AddMatchApiResponse> AddMatchAsync(AddMatchApiRequest request)
         {
             await _cache.RemoveAsync("match:all");
 
-            var requestModel = _mapper.Map<AddMatchRequestModel>(dto);
-            var requestClient = _bus.CreateRequestClient<AddMatchRequestModel>();
-            var response = await requestClient.GetResponse<AddMatchResponseModel>(requestModel);
-            var responseDTO = _mapper.Map<AddMatchResultDTO>(response.Message);
-            return responseDTO;
+            var messageRequest = _mapper.Map<AddMatchMessageRequest>(request);
+            var requestClient = _bus.CreateRequestClient<AddMatchMessageRequest>();
+            var messageResponse = await requestClient.GetResponse<AddMatchMessageResponse>(messageRequest);
+            var apiResponse = _mapper.Map<AddMatchApiResponse>(messageResponse.Message);
+            return apiResponse;
         }
 
-        public async Task<GetMatchesResultDTO> GetMatchesAsync(GetMatchesDTO dto)
+        public async Task<GetMatchesApiResponse> GetMatchesAsync(GetMatchesApiRequest request)
         {
             return await _cache.GetThenSetAsync("match:all", async () =>
             {
-                var requestModel = _mapper.Map<GetMatchesRequestModel>(dto);
-                var requestClient = _bus.CreateRequestClient<GetMatchesRequestModel>();
-                var response = await requestClient.GetResponse<GetMatchesResponseModel>(requestModel);
-                var responseDTO = _mapper.Map<GetMatchesResultDTO>(response.Message);
-                responseDTO._CachedAt = DateTime.Now;
-                return responseDTO;
+                var messageRequest = _mapper.Map<GetMatchesMessageRequest>(request);
+                var requestClient = _bus.CreateRequestClient<GetMatchesMessageRequest>();
+                var messageResponse = await requestClient.GetResponse<GetMatchesMessageResponse>(messageRequest);
+                var apiResponse = _mapper.Map<GetMatchesApiResponse>(messageResponse.Message);
+                apiResponse._CachedAt = DateTime.Now;
+                return apiResponse;
             }, new() { AbsoluteExpirationRelativeToNow = _redisConfig.AbsoluteExpiration });
         }
 
-        public async Task<GetMatchResultDTO> GetMatchByIdAsync(GetMatchDTO dto)
+        public async Task<GetMatchApiResponse> GetMatchByIdAsync(GetMatchApiRequest request)
         {
-            return await _cache.GetThenSetAsync($"match:{dto.MatchId}", async () =>
+            return await _cache.GetThenSetAsync($"match:{request.MatchId}", async () =>
             {
-                var requestModel = _mapper.Map<GetMatchRequestModel>(dto);
-                var requestClient = _bus.CreateRequestClient<GetMatchRequestModel>();
-                var response = await requestClient.GetResponse<GetMatchResponseModel>(requestModel);
-                var responseDTO = _mapper.Map<GetMatchResultDTO>(response.Message);
-                responseDTO._CachedAt = DateTime.Now;
-                return responseDTO;
+                var messageRequest = _mapper.Map<GetMatchMessageRequest>(request);
+                var requestClient = _bus.CreateRequestClient<GetMatchMessageRequest>();
+                var messageResponse = await requestClient.GetResponse<GetMatchMessageResponse>(messageRequest);
+                var apiResponse = _mapper.Map<GetMatchApiResponse>(messageResponse.Message);
+                apiResponse._CachedAt = DateTime.Now;
+                return apiResponse;
             }, new() { AbsoluteExpirationRelativeToNow = _redisConfig.AbsoluteExpiration });
         }
 
-        public async Task<DeleteMatchResultDTO> DeleteMatchByIdAsync(DeleteMatchDTO dto)
+        public async Task<DeleteMatchApiResponse> DeleteMatchByIdAsync(DeleteMatchApiRequest request)
         {
             await _cache.RemoveAsync("match:all");
-            await _cache.RemoveAsync($"match:{dto.MatchId}");
+            await _cache.RemoveAsync($"match:{request.MatchId}");
 
-            var requestModel = _mapper.Map<DeleteMatchRequestModel>(dto);
-            var requestClient = _bus.CreateRequestClient<DeleteMatchRequestModel>();
-            var response = await requestClient.GetResponse<DeleteMatchResponseModel>(requestModel);
-            var responseDTO = _mapper.Map<DeleteMatchResultDTO>(response.Message);
-            return responseDTO;
+            var messageRequest = _mapper.Map<DeleteMatchMessageRequest>(request);
+            var requestClient = _bus.CreateRequestClient<DeleteMatchMessageRequest>();
+            var messageResponse = await requestClient.GetResponse<DeleteMatchMessageResponse>(messageRequest);
+            var apiResponse = _mapper.Map<DeleteMatchApiResponse>(messageResponse.Message);
+            return apiResponse;
         }
     }
 }

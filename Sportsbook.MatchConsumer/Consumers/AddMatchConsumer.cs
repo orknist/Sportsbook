@@ -5,7 +5,7 @@ using Sportsbook.MatchConsumer.Business.Service;
 
 namespace Sportsbook.MatchConsumer.Consumers
 {
-    public class AddMatchConsumer : IConsumer<AddMatchRequestModel>
+    public class AddMatchConsumer : IConsumer<AddMatchMessageRequest>
     {
         private readonly ILogger<GetMatchConsumer> _logger;
         private readonly IMatchConsumerService _matchConsumerService;
@@ -16,7 +16,7 @@ namespace Sportsbook.MatchConsumer.Consumers
             _matchConsumerService = matchConsumerService;
         }
 
-        public async Task Consume(ConsumeContext<AddMatchRequestModel> context)
+        public async Task Consume(ConsumeContext<AddMatchMessageRequest> context)
         {
             _logger.LogInformation($"Received AddMatch request with id {context.Message.Match.Id}.");
 
@@ -29,7 +29,7 @@ namespace Sportsbook.MatchConsumer.Consumers
             catch (Exception exception)
             {
                 _logger.LogError(exception, "Error while processing GetMatches request.");
-                await context.RespondAsync(new BaseResponseModel { IsSuccess = false, ErrorMessage = exception.Message });
+                await context.RespondAsync(new BaseMessageResponse { IsSuccess = false, ErrorMessage = exception.Message });
             }
         }
     }

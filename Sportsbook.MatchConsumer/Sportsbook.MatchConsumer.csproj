@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Sportsbook.Infrastructure.Dapper\Sportsbook.Infrastructure.Dapper.csproj" />
     <ProjectReference Include="..\Sportsbook.MatchConsumer.Business\Sportsbook.MatchConsumer.Business.csproj" />
   </ItemGroup>
 

@@ -1,40 +1,46 @@
-﻿using Dapper;
+﻿using AutoMapper;
+using Dapper;
 using Dapper.Contrib.Extensions;
 using Sportsbook.Data.Dapper.Entities;
-using Sportsbook.Data.Dapper.Interfaces;
+using Sportsbook.Data.Entities;
+using Sportsbook.Data.Repositories;
 using System.Data;
 
 namespace Sportsbook.Data.Dapper.Repositories
 {
     public class MatchRepository : IMatchRepository
     {
+        private readonly IMapper _mapper;
         private readonly IDbConnection _dbConnection;
 
-        public MatchRepository(IDbConnection dbConnection)
+        public MatchRepository(IMapper mapper, IDbConnection dbConnection)
         {
+            _mapper = mapper;
             _dbConnection = dbConnection;
         }
 
-        public async Task<int> AddMatchAsync(Match match)
+        public async Task<int> AddMatchAsync(MatchEntity entity)
         {
-            if (await _dbConnection.GetAsync<Competition>(match.CompetitionId) == null)
-                await _dbConnection.InsertAsync(match.Competition);
+            var dapperEntity = _mapper.Map<MatchDapperEntity>(entity);
 
-            if (await _dbConnection.GetAsync<Round>(match.RoundId) == null)
-                await _dbConnection.InsertAsync(match.Round);
+            if (await _dbConnection.GetAsync<CompetitionDapperEntity>(dapperEntity.CompetitionId) == null)
+                await _dbConnection.InsertAsync(dapperEntity.Competition);
 
-            if (await _dbConnection.GetAsync<Sport>(match.SportId) == null)
-                await _dbConnection.InsertAsync(match.Sport);
+            if (await _dbConnection.GetAsync<RoundDapperEntity>(dapperEntity.RoundId) == null)
+                await _dbConnection.InsertAsync(dapperEntity.Round);
 
-            if (await _dbConnection.GetAsync<Venue>(match.VenueId) == null)
-                await _dbConnection.InsertAsync(match.Venue);
+            if (await _dbConnection.GetAsync<SportDapperEntity>(dapperEntity.SportId) == null)
+                await _dbConnection.InsertAsync(dapperEntity.Sport);
 
-            var matchId = await _dbConnection.InsertAsync(match);
-            if (match.Competitors != null && match.Competitors.Any())
+            if (await _dbConnection.GetAsync<VenueDapperEntity>(dapperEntity.VenueId) == null)
+                await _dbConnection.InsertAsync(dapperEntity.Venue);
+
+            var matchId = await _dbConnection.InsertAsync(dapperEntity);
+            if (dapperEntity.Competitors != null && dapperEntity.Competitors.Any())
             {
-                foreach (var competitor in match.Competitors)
+                foreach (var competitor in dapperEntity.Competitors)
                 {
-                    competitor.Match = match;
+                    competitor.Match = dapperEntity;
                     competitor.MatchId = matchId;
                     await _dbConnection.InsertAsync(competitor);
                 }
@@ -43,7 +49,7 @@ namespace Sportsbook.Data.Dapper.Repositories
             return matchId;
         }
 
-        public async Task<Match?> GetMatchByIdAsync(int id)
+        public async Task<MatchEntity?> GetMatchByIdAsync(int id)
         {
             var sql = @"
                 SELECT m.*, r.*, s.*, v.*, c.*
@@ -56,7 +62,7 @@ namespace Sportsbook.Data.Dapper.Repositories
                 LIMIT 1
             ";
 
-            var match = (await _dbConnection.QueryAsync<Match, Round, Sport, Venue, Competition, Match>(sql, (match, round, sport, venue, competition) =>
+            var matchDapperEntity = (await _dbConnection.QueryAsync<MatchDapperEntity, RoundDapperEntity, SportDapperEntity, VenueDapperEntity, CompetitionDapperEntity, MatchDapperEntity>(sql, (match, round, sport, venue, competition) =>
             {
                 match.Round = round;
                 match.Sport = sport;
@@ -65,13 +71,14 @@ namespace Sportsbook.Data.Dapper.Repositories
                 return match;
             }, new { MatchId = id }, splitOn: "Id,Id,Id,Id")).FirstOrDefault();
 
-            if (match != null)
-                match.Competitors = (await _dbConnection.QueryAsync<Competitor>("SELECT * FROM Competitors WHERE MatchId=@MatchId", new { MatchId = match.Id })).ToList();
+            if (matchDapperEntity != null)
+                matchDapperEntity.Competitors = (await _dbConnection.QueryAsync<CompetitorDapperEntity>("SELECT * FROM Competitors WHERE MatchId=@MatchId", new { MatchId = matchDapperEntity.Id })).ToList();
 
-            return match;
+            var matchEntity = _mapper.Map<MatchEntity>(matchDapperEntity);
+            return matchEntity;
         }
 
-        public async Task<List<Match>> GetAllMatchesAsync()
+        public async Task<List<MatchEntity>> GetAllMatchesAsync()
         {
             var sql = @"
                 SELECT m.*, r.*, s.*, v.*, c.*
@@ -82,7 +89,7 @@ namespace Sportsbook.Data.Dapper.Repositories
                 LEFT JOIN Competitions c ON m.CompetitionId = c.Id
             ";
 
-            var matches = (await _dbConnection.QueryAsync<Match, Round, Sport, Venue, Competition, Match>(sql, (match, round, sport, venue, competition) =>
+            var matchDapperEntities = (await _dbConnection.QueryAsync<MatchDapperEntity, RoundDapperEntity, SportDapperEntity, VenueDapperEntity, CompetitionDapperEntity, MatchDapperEntity>(sql, (match, round, sport, venue, competition) =>
             {
                 match.Round = round;
                 match.Sport = sport;
@@ -92,17 +99,19 @@ namespace Sportsbook.Data.Dapper.Repositories
             },
             splitOn: "Id,Id,Id,Id")).ToList();
 
-            matches.ForEach(async match =>
+            matchDapperEntities.ForEach(async match =>
             {
-                match.Competitors = (await _dbConnection.QueryAsync<Competitor>("SELECT * FROM Competitors WHERE MatchId=@MatchId", new { MatchId = match.Id })).ToList();
+                match.Competitors = (await _dbConnection.QueryAsync<CompetitorDapperEntity>("SELECT * FROM Competitors WHERE MatchId=@MatchId", new { MatchId = match.Id })).ToList();
             });
 
-            return matches;
+            var matchEntities = _mapper.Map<List<MatchEntity>>(matchDapperEntities);
+            return matchEntities;
         }
 
-        public async Task<bool> UpdateMatchAsync(Match match)
+        public Task<bool> UpdateMatchAsync(MatchEntity match)
         {
-            return await _dbConnection.UpdateAsync(match);
+            throw new NotImplementedException();
+            //return await _dbConnection.UpdateAsync(match);
         }
 
         public async Task<bool> DeleteMatchAsync(int id)

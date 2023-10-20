@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportsbook.Contracts", "Spo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportsbook.API.QueueService", "Sportsbook.API.QueueService\Sportsbook.API.QueueService.csproj", "{9C70F3A3-8FF3-4DC7-9368-78B9B4FD2A23}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportsbook.Data.Redis", "Sportsbook.Data.Redis\Sportsbook.Data.Redis.csproj", "{5238F05D-3249-481B-8869-C47AA5F45687}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportsbook.MatchConsumer.Tests", "Sportsbook.MatchConsumer.Tests\Sportsbook.MatchConsumer.Tests.csproj", "{A2DEED8D-9852-4FB1-9705-D846A228496E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportsbook.MatchConsumer.Business", "Sportsbook.MatchConsumer.Business\Sportsbook.MatchConsumer.Business.csproj", "{F8EF76D7-0675-444A-BF1C-0D5B69D7F985}"
@@ -39,12 +37,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-consumer", "4-consumer", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-data", "5-data", "{77FB96D1-2D4A-45D8-B7A1-DF0613F10737}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sportsbook.Infrastructure.ExceptionHandler", "Sportsbook.Infrastructure.ExceptionHandler\Sportsbook.Infrastructure.ExceptionHandler.csproj", "{CE720D1A-072E-4DD3-B133-F60D4BD81731}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sportsbook.Infrastructure.ExceptionHandler", "Sportsbook.Infrastructure.ExceptionHandler\Sportsbook.Infrastructure.ExceptionHandler.csproj", "{CE720D1A-072E-4DD3-B133-F60D4BD81731}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{1F76576D-0A8B-4836-BDE3-46BD0508B9A6}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sportsbook.Infrastructure.Redis", "Sportsbook.Infrastructure.Redis\Sportsbook.Infrastructure.Redis.csproj", "{4B5DBADD-7CF6-40C2-B4F1-997E417D4095}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sportsbook.Infrastructure.Dapper", "Sportsbook.Infrastructure.Dapper\Sportsbook.Infrastructure.Dapper.csproj", "{0CC06DB3-F9D2-4C66-AFA2-3F3C690F19B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sportsbook.Data", "Sportsbook.Data\Sportsbook.Data.csproj", "{19B92A4A-5320-41CF-8A03-64FD95FBE6C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,10 +88,6 @@ Global
 		{9C70F3A3-8FF3-4DC7-9368-78B9B4FD2A23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C70F3A3-8FF3-4DC7-9368-78B9B4FD2A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C70F3A3-8FF3-4DC7-9368-78B9B4FD2A23}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5238F05D-3249-481B-8869-C47AA5F45687}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5238F05D-3249-481B-8869-C47AA5F45687}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5238F05D-3249-481B-8869-C47AA5F45687}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5238F05D-3249-481B-8869-C47AA5F45687}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2DEED8D-9852-4FB1-9705-D846A228496E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A2DEED8D-9852-4FB1-9705-D846A228496E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2DEED8D-9852-4FB1-9705-D846A228496E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -100,6 +100,18 @@ Global
 		{CE720D1A-072E-4DD3-B133-F60D4BD81731}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE720D1A-072E-4DD3-B133-F60D4BD81731}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE720D1A-072E-4DD3-B133-F60D4BD81731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B5DBADD-7CF6-40C2-B4F1-997E417D4095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B5DBADD-7CF6-40C2-B4F1-997E417D4095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B5DBADD-7CF6-40C2-B4F1-997E417D4095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B5DBADD-7CF6-40C2-B4F1-997E417D4095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CC06DB3-F9D2-4C66-AFA2-3F3C690F19B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CC06DB3-F9D2-4C66-AFA2-3F3C690F19B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CC06DB3-F9D2-4C66-AFA2-3F3C690F19B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CC06DB3-F9D2-4C66-AFA2-3F3C690F19B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B92A4A-5320-41CF-8A03-64FD95FBE6C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19B92A4A-5320-41CF-8A03-64FD95FBE6C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19B92A4A-5320-41CF-8A03-64FD95FBE6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19B92A4A-5320-41CF-8A03-64FD95FBE6C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,7 +125,6 @@ Global
 		{3BC7E472-8F69-4C78-9343-B015F8FBC721} = {4D6EE39A-6F2D-4581-AA07-9AD0FDFF2DB4}
 		{A01F0839-1DF9-48DF-82D1-25F9CBF95DF1} = {BB21328F-D7F8-4C69-B9D9-2DD1063CB0D4}
 		{9C70F3A3-8FF3-4DC7-9368-78B9B4FD2A23} = {4D6EE39A-6F2D-4581-AA07-9AD0FDFF2DB4}
-		{5238F05D-3249-481B-8869-C47AA5F45687} = {77FB96D1-2D4A-45D8-B7A1-DF0613F10737}
 		{A2DEED8D-9852-4FB1-9705-D846A228496E} = {EFF6BBDB-38E2-46E4-A377-737D3897C8E0}
 		{F8EF76D7-0675-444A-BF1C-0D5B69D7F985} = {B8F470E8-6572-4630-9DAC-CF828FE3E216}
 		{B1105BB0-D173-4B35-B123-7EA969167447} = {FE7F808E-E149-4D4E-BB4C-A8C2293A5968}
@@ -122,6 +133,9 @@ Global
 		{B8F470E8-6572-4630-9DAC-CF828FE3E216} = {FE7F808E-E149-4D4E-BB4C-A8C2293A5968}
 		{77FB96D1-2D4A-45D8-B7A1-DF0613F10737} = {FE7F808E-E149-4D4E-BB4C-A8C2293A5968}
 		{CE720D1A-072E-4DD3-B133-F60D4BD81731} = {B1105BB0-D173-4B35-B123-7EA969167447}
+		{4B5DBADD-7CF6-40C2-B4F1-997E417D4095} = {B1105BB0-D173-4B35-B123-7EA969167447}
+		{0CC06DB3-F9D2-4C66-AFA2-3F3C690F19B6} = {B1105BB0-D173-4B35-B123-7EA969167447}
+		{19B92A4A-5320-41CF-8A03-64FD95FBE6C3} = {77FB96D1-2D4A-45D8-B7A1-DF0613F10737}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E75196B-9054-4561-B59D-37D4A722D137}

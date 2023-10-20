@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Sportsbook.Contracts.Models;
-using Sportsbook.Data.Dapper.Entities;
+using Sportsbook.Data.Entities;
 
 namespace Sportsbook.MatchConsumer.Business.Mapping
 {
@@ -8,13 +8,13 @@ namespace Sportsbook.MatchConsumer.Business.Mapping
     {
         public MappingProfile()
         {
-            // Sportsbook.Data.Dapper.Entities << >> Sportsbook.Contracts.Models
-            CreateMap<Competition, CompetitionModel>().ReverseMap();
-            CreateMap<Competitor, CompetitorModel>().ReverseMap();
-            CreateMap<Match, MatchModel>().ReverseMap();
-            CreateMap<Round, RoundModel>().ReverseMap();
-            CreateMap<Sport, SportModel>().ReverseMap();
-            CreateMap<Venue, VenueModel>().ReverseMap();
+            // Sportsbook.Data.Entities << >> Sportsbook.Contracts.Models
+            CreateMap<CompetitionEntity, CompetitionMessageModel>().ReverseMap();
+            CreateMap<CompetitorEntity, CompetitorMessageModel>().ReverseMap();
+            CreateMap<MatchEntity, MatchMessageModel>().ReverseMap();
+            CreateMap<RoundEntity, RoundMessageModel>().ReverseMap();
+            CreateMap<SportEntity, SportMessageModel>().ReverseMap();
+            CreateMap<VenueEntity, VenueMessageModel>().ReverseMap();
         }
     }
 }

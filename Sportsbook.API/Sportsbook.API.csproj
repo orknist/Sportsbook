@@ -11,6 +11,7 @@
     <ProjectReference Include="..\Sportsbook.API.QueueService\Sportsbook.API.QueueService.csproj" />
     <ProjectReference Include="..\Sportsbook.Infrastructure.ExceptionHandler\Sportsbook.Infrastructure.ExceptionHandler.csproj" />
     <ProjectReference Include="..\Sportsbook.Infrastructure.MassTransit\Sportsbook.Infrastructure.MassTransit.csproj" />
+    <ProjectReference Include="..\Sportsbook.Infrastructure.Redis\Sportsbook.Infrastructure.Redis.csproj" />
     <ProjectReference Include="..\Sportsbook.Infrastructure.Swagger\Sportsbook.Infrastructure.Swagger.csproj" />
   </ItemGroup>
 

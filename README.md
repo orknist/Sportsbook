@@ -20,59 +20,68 @@ No complicated design was done. Not even a relationship between tables was creat
 
 ## Sportsbook Solution Overview:
 
-API > API.QueueService ---> (RabbitMQ) ---> MatchConsumer > Data.Dapper
+    API > API.QueueService ---> (RabbitMQ) ---> MatchConsumer > Data.Dapper
 
-1. Sportsbook.API:
-    * This is the main API project that provides endpoints for managing sports matches.
-    * It contains configurations for controllers, JSON serialization, Swagger, MassTransit, Redis caching, and Fluent Validations.
+1. Sportsbook.Contracts:
+    * Defines models (*MessageModel), requests (*MessageRequest), and responses (*MessageResponse) used across the solution.
+    * For example, the MatchMessageModel represents a sports match with its associated details.
+    * Related to RabbitMQ operations for message publishing and consumption.
 
-2. Sportsbook.API.Common:
-    * Contains common DTOs used across the solution.
-    * Provides extensions for Fluent Validations.
+2. Sportsbook.Infrastructure.Dapper:
+    * Contains Dapper configurations like the DatabaseConfig for database connection details.
+    * Creates database tables and data for test purpose.
 
-3. Sportsbook.API.QueueService:
-    * Responsible for processing match-related operations using a queue.
-    * Contains extensions for adding queue services and configurations for AutoMapper.
-    * Contains mapping profile for AutoMapper.
-
-4. Sportsbook.Contracts:
-    * Defines models, requests, and responses used across the solution.
-    * For example, the MatchModel represents a sports match with its associated details.
-
-5. Sportsbook.Data.Dapper:
-    * Handles database operations using the Dapper ORM.
-    * Contains entities, repositories, and configurations like the DatabaseConfig for database connection details.
-
-6. Sportsbook.Data.Redis:
-    * Related to Redis operations for caching purposes.
-    * Contains configurations like the RedisConfig for Redis connection details.
-
-7. Sportsbook.Docker:
-    * Contains Docker-related files to containerize the application components.
-    * The DockerCompose.yml file defines services like RabbitMQ and Redis for container orchestration.
-
-8. Sportsbook.Infrastructure.ExceptionHandler:
+3. Sportsbook.Infrastructure.ExceptionHandler:
     * Provides a middleware for global exception handling across the API.
     * The ExceptionHandlerMiddleware captures and logs exceptions, returning a standardized error response.
 
-9. Sportsbook.Infrastructure.MassTransit:
+4. Sportsbook.Infrastructure.MassTransit:
     * Contains configurations related to MassTransit, a message bus for .NET.
     * The RabbitMQConfig provides settings for connecting to RabbitMQ.
 
-10. Sportsbook.Infrastructure.Swagger:
+5. Sportsbook.Infrastructure.Redis:
+    * Contains configurations like the RedisConfig for Redis connection details.
+    * Related to Redis operations for caching purposes.
+
+6. Sportsbook.Infrastructure.Swagger:
     * Provides extensions for integrating Swagger, a tool for API documentation and testing.
     * Contains methods to add and use Swagger configurations.
 
-11. Sportsbook.MatchConsumer:
-    * Consumes messages from RabbitMQ related to match operations.
-    * Contains configurations for MassTransit, repositories, AutoMapper, and services.
+7. Sportsbook.API:
+    * This is the main API project that provides endpoints for managing sports matches.
+    * It contains configurations for controllers, JSON serialization, Swagger, MassTransit, Redis caching, and Fluent Validations.
 
-12. Sportsbook.MatchConsumer.Business:
+8. Sportsbook.API.Common:
+    * Contains common models (*ApiModel), requests (*ApiRequest), and responses (*ApiResponse) used across the solution.
+    * Provides extensions for Fluent Validations.
+    * Related to API operations for request validation and response formatting.
+
+9. Sportsbook.API.QueueService:
+    * Responsible for processing match-related operations using a queue.
+    * Contains extensions for adding queue services and configurations for AutoMapper.
+    * Contains mapping profile for AutoMapper.
+    * Related to RabbitMQ operations for message publishing and consumption.
+
+10. Sportsbook.MatchConsumer:
+    * Consumes messages from RabbitMQ related to match operations.
+    * Contains Consumers and configurations for MassTransit, Dapper, Repositories.
+
+11. Sportsbook.MatchConsumer.Business:
     * Contains business logic for processing match-related operations.
+    * Contains configurations for AutoMapper, and services.
     * Contains mapping profile for AutoMapper.
 
-13. Sportsbook.MatchConsumer.Tests
+12. Sportsbook.Data:
+    * Contains entities (*Entity) and repository interfaces.
+
+13. Sportsbook.Data.Dapper:
+    * Contains Dapper specified entities (*DapperEntity), concrete repositories, and entity mapping files.
+    * Handles database operations using the Dapper ORM.
+
+14. Sportsbook.MatchConsumer.Tests
     * This is the test project for Sportsbook.MatchConsumer.
     * It contains integration tests for the functionality provided in the MatchConsumer project.
 
-Each of these projects plays a specific role in the overall solution, providing functionalities ranging from API endpoints, data access, message consumption, to infrastructure concerns.
+15. Sportsbook.Docker (Directory):
+    * Contains Docker-related files to containerize the application components.
+    * The DockerCompose.yml file defines services like RabbitMQ and Redis for container orchestration.

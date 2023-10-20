@@ -1,7 +1,7 @@
 using Sportsbook.API.QueueService;
-using Sportsbook.Data.Redis;
 using Sportsbook.Infrastructure.ExceptionHandler;
 using Sportsbook.Infrastructure.MassTransit;
+using Sportsbook.Infrastructure.Redis;
 using Sportsbook.Infrastructure.Swagger;
 using System.Text.Json.Serialization;
 using Sportsbook.API.Common;
@@ -25,7 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration(); // Extension method from Sportsbook.Infrastructure.Swagger
 builder.Services.AddMassTransitConfiguration(builder.Configuration); // Extension method from Sportsbook.Infrastructure.MassTransit
 builder.Services.AddQueueServices(); // Extension method from Sportsbook.API.QueueService
-builder.Services.AddRedisCacheConfiguration(builder.Configuration); // Extension method from Sportsbook.Data.Redis
+builder.Services.AddRedisCacheConfiguration(builder.Configuration); // Extension method from Sportsbook.Infrastructure.Redis
 builder.Services.AddFluentValidationsConfiguration(); // Extension method from Sportsbook.API.Common
 
 // Use Services

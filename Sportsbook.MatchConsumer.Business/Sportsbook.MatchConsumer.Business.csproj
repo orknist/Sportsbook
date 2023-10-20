@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Sportsbook.Contracts\Sportsbook.Contracts.csproj" />
     <ProjectReference Include="..\Sportsbook.Data.Dapper\Sportsbook.Data.Dapper.csproj" />
+    <ProjectReference Include="..\Sportsbook.Data\Sportsbook.Data.csproj" />
     <ProjectReference Include="..\Sportsbook.Infrastructure.MassTransit\Sportsbook.Infrastructure.MassTransit.csproj" />
   </ItemGroup>
 

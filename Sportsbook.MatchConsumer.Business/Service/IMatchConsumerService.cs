@@ -5,9 +5,9 @@ namespace Sportsbook.MatchConsumer.Business.Service
 {
     public interface IMatchConsumerService
     {
-        Task<AddMatchResponseModel> AddMatchAsync(AddMatchRequestModel requestModel);
-        Task<DeleteMatchResponseModel> DeleteMatchAsync(DeleteMatchRequestModel requestModel);
-        Task<GetMatchResponseModel> GetMatchAsync(GetMatchRequestModel requestModel);
-        Task<GetMatchesResponseModel> GetMatchesAsync(GetMatchesRequestModel requestModel);
+        Task<AddMatchMessageResponse> AddMatchAsync(AddMatchMessageRequest requestModel);
+        Task<DeleteMatchMessageResponse> DeleteMatchAsync(DeleteMatchMessageRequest requestModel);
+        Task<GetMatchMessageResponse> GetMatchAsync(GetMatchMessageRequest requestModel);
+        Task<GetMatchesMessageResponse> GetMatchesAsync(GetMatchesMessageRequest requestModel);
     }
 }

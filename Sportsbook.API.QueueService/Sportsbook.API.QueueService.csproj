@@ -14,7 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Sportsbook.API.Common\Sportsbook.API.Common.csproj" />
     <ProjectReference Include="..\Sportsbook.Contracts\Sportsbook.Contracts.csproj" />
-    <ProjectReference Include="..\Sportsbook.Data.Redis\Sportsbook.Data.Redis.csproj" />
+    <ProjectReference Include="..\Sportsbook.Infrastructure.Redis\Sportsbook.Infrastructure.Redis.csproj" />
   </ItemGroup>
 
 </Project>

@@ -20,7 +20,7 @@ No complicated design was done. Not even a relationship between tables was creat
 
 ## Sportsbook Solution Overview:
 
-    API > API.QueueService ---> (RabbitMQ) ---> MatchConsumer > Data.Dapper
+    API > API.QueueService ---> (RabbitMQ) ---> MatchConsumer > Data.Dapper > Database
 
 1. Sportsbook.Contracts:
     * Defines models (*MessageModel), requests (*MessageRequest), and responses (*MessageResponse) used across the solution.

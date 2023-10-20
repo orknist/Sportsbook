@@ -85,3 +85,46 @@ No complicated design was done. Not even a relationship between tables was creat
 15. Sportsbook.Docker (Directory):
     * Contains Docker-related files to containerize the application components.
     * The DockerCompose.yml file defines services like RabbitMQ and Redis for container orchestration.
+
+## Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant API as Sportsbook.API
+    participant QueueService as Sportsbook.API.QueueService
+    participant MessageBroker as Message Broker
+    participant MatchConsumer as Sportsbook.MatchConsumer
+
+    API->>QueueService: AddMatchApiRequest
+    QueueService->>MessageBroker: AddMatchMessageRequest
+    MessageBroker->>MatchConsumer: AddMatchMessageRequest
+    MatchConsumer-->>MessageBroker: AddMatchMessageResponse
+    MessageBroker-->>QueueService: AddMatchMessageResponse
+    QueueService-->>API: AddMatchApiResponse
+```
+
+## Flow Diagram
+
+```mermaid
+graph TB
+    Client("Client")
+    API("Sportsbook.API")
+    QueueService("Sportsbook.API.QueueService")
+    MessageBroker("Message Broker")
+    MatchConsumer("Sportsbook.MatchConsumer")
+    Data("Sportsbook.Data")
+    DataDapper("Sportsbook.Data.Dapper")
+    Database("Database")
+
+	Client-->|"*ApiRequest"|API
+    API-->|"*ApiRequest"|QueueService
+    QueueService-->|"*MessageRequest"|MessageBroker
+    MessageBroker-->|"*MessageRequest"|MatchConsumer
+    MatchConsumer-->|"*Entity"|Data
+    Data-->|"*DapperEntity"|DataDapper
+    DataDapper-->|"DB Operations"|Database
+    MatchConsumer-->|"*MessageResponse"|MessageBroker
+    MessageBroker-->|"*MessageResponse"|QueueService
+    QueueService-->|"*ApiResponse"|API
+```
+
